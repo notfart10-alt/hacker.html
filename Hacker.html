@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULTIMATE HACKER 3000</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        body {
+            background: #000;
+            color: #00ff00;
+            font-family: 'VT323', monospace;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+            font-size: 3em;
+            margin: 20px 0;
+            animation: glitch 1s infinite;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        input {
+            background: #111;
+            border: 3px solid #00ff00;
+            color: #00ff00;
+            font-family: 'VT323', monospace;
+            font-size: 2em;
+            padding: 10px 20px;
+            width: 400px;
+            text-align: center;
+        }
+        
+        button {
+            background: #ff0000;
+            color: #fff;
+            border: 3px solid #ffff00;
+            font-family: 'VT323', monospace;
+            font-size: 2.5em;
+            padding: 15px 40px;
+            margin: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff0000;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background: #ffff00;
+            color: #ff0000;
+            transform: scale(1.1);
+        }
+        
+        #output {
+            margin-top: 30px;
+            min-height: 400px;
+            background: rgba(0, 30, 0, 0.9);
+            border: 2px solid #00ff00;
+            padding: 20px;
+            text-align: left;
+            font-size: 1.4em;
+            white-space: pre-wrap;
+            display: none;
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 0, 0.1) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            animation: scan 4s linear infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix" id="matrix"></div>
+    <div class="scanline"></div>
+    
+    <div class="container">
+        <h1>█ ULTIMATE HACKER 3000 █</h1>
+        <p style="color:#ffff00; font-size:1.5em;">Enter your victim's username below</p>
+        
+        <input type="text" id="username" placeholder="elonmusk" autocomplete="off">
+        <br>
+        <button onclick="startHack()">HACK THEM NOW</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const matrixCanvas = document.createElement('canvas');
+        matrixCanvas.className = 'matrix';
+        document.body.appendChild(matrixCanvas);
+        
+        function initMatrix() {
+            const ctx = matrixCanvas.getContext('2d');
+            matrixCanvas.height = window.innerHeight;
+            matrixCanvas.width = window.innerWidth;
+            
+            const chars = '01アイウエオ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$@#%&*';
+            const fontSize = 14;
+            const columns = matrixCanvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                ctx.fillStyle = '#00ff00';
+                ctx.font = `${fontSize}px monospace`;
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 35);
+        }
+        
+        window.addEventListener('resize', () => {
+            matrixCanvas.height = window.innerHeight;
+            matrixCanvas.width = window.innerWidth;
+        });
+        
+        function startHack() {
+            const username = document.getElementById('username').value.trim() || "random_noob";
+            const output = document.getElementById('output');
+            output.style.display = 'block';
+            output.innerHTML = '';
+            
+            const messages = [
+                `[+] Connecting to dark web proxy...`,
+                `[+] Bypassing FBI firewall...`,
+                `[+] Accessing ${username}'s mainframe...`,
+                `[+] Cracking password: hunter2${Math.random().toString(36).substring(2, 8)}`,
+                `[+] Downloading browser history...`,
+                `[+] Stealing 47,291 cat photos...`,
+                `[+] Reading private DMs...`,
+                `[+] HACKING COMPLETE!`,
+            ];
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < messages.length) {
+                    const line = document.createElement('div');
+                    line.textContent = messages[i];
+                    output.appendChild(line);
+                    output.scrollTop = output.scrollHeight;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    
+                    // Final prank result
+                    const final = document.createElement('div');
+                    final.style.color = '#ffff00';
+                    final.style.fontSize = '2em';
+                    final.style.textAlign = 'center';
+                    final.style.marginTop = '30px';
+                    final.innerHTML = `
+                        <br>
+                        ████████╗██╗  ██╗███████╗██╗   ██╗    ██████╗ ██╗   ██╗███████╗
+                        ╚══██╔══╝██║  ██║██╔════╝██║   ██║    ██╔══██╗██║   ██║██╔════╝
+                           ██║   ███████║█████╗  ██║   ██║    ██████╔╝██║   ██║███████╗
+                           ██║   ██╔══██║██╔══╝  ██║   ██║    ██╔══██╗██║   ██║╚════██║
+                           ██║   ██║  ██║███████╗╚██████╔╝    ██║  ██║╚██████╔╝███████║
+                           ╚═╝   ╚═╝  ╚═╝╚══════╝ ╚═════╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝<br><br>
+                        <span style="color:#ff00ff;">JUST KIDDING ${username.toUpperCase()} 😂</span><br>
+                        This was a prank website. Your account is safe (probably).<br>
+                        <small style="color:#666;">Refresh to hack someone else</small>
+                    `;
+                    output.appendChild(final);
+                }
+            }, 600);
+        }
+        
+        // Start the matrix rain
+        initMatrix();
+        
+        // Bonus: Enter key support
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                startHack();
+            }
+        });
+        
+        // Fake "hacked" cursor effect
+        console.log("%cYou have been pranked by Grok", "color: lime; font-size: 20px; font-family: monospace;");
+    </script>
+</body>
+</html>
